@@ -1,17 +1,79 @@
 * {
     box-sizing: border-box;
-  }
-  
-  html,
-  body,
-  #root {
+}
+
+html,
+body,
+#root {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-  }
-  
-  body {
+    /* font-family: 'Fira Sans', sans-serif; */
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: rgb(240, 240, 255);
+}
+
+.app-container {
+    --app-width: 1400px;
     background: white;
-  }
-  
+    margin: auto;
+    width: var(--app-width);
+    height: 100%;
+}
+
+.header-container {
+    --header-height: 50px;
+    height: var(--header-height);
+    display: flex;
+    flex-direction: row;
+
+}
+
+.header-icon {
+    margin-top: 5px;
+    margin-left: 10px;
+    color: rgb(43, 75, 239);
+    float: right;
+}
+
+.header-text {
+    font-size: 25px;
+    margin-left: 10px;
+    height: 100%;
+    line-height: var(--header-height);
+    font-weight: 800;
+}
+
+.scene-container {
+    --scene-height: 800px;
+    margin: auto;
+    width: 100%;
+    height: var(--scene-height);
+    background-color: blue;
+
+}
+
+.ui-container {
+    width: 100%;
+    height: calc(100% - var(--scene-height) - var(--header-height));
+    background-color: orange;
+    display: flex;
+}
+
+.element-configuration-container {
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.element-preview {
+    width: 50%;
+    height: 100%;
+    background-color: grey;
+}

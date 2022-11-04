@@ -1,4 +1,4 @@
-import ReactDOMClient, { createRoot } from 'react-dom/client'
+import ReactDOMClient from 'react-dom/client'
 import * as React from 'react'
 import './main.css'
 import App from './App'
