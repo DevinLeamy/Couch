@@ -9,7 +9,6 @@ body,
     height: 100%;
     margin: 0;
     padding: 0;
-    /* font-family: 'Fira Sans', sans-serif; */
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -18,7 +17,9 @@ body {
 }
 
 .app-container {
-    --app-width: 1400px;
+    --app-width: 100%;
+    position: relative;
+
     background: white;
     margin: auto;
     width: var(--app-width);
@@ -49,7 +50,7 @@ body {
 }
 
 .scene-container {
-    --scene-height: 800px;
+    --scene-height: 100%;
     margin: auto;
     width: 100%;
     height: var(--scene-height);
@@ -58,22 +59,27 @@ body {
 }
 
 .ui-container {
-    width: 100%;
-    height: calc(100% - var(--scene-height) - var(--header-height));
+    position: absolute;
+    padding: 10px;
+    top: 0px;
+    right: 0px;
+    width: 400px;
+    height: 100%;
     background-color: orange;
     display: flex;
+    flex-direction: column;
 }
 
 .element-configuration-container {
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    height: 200px;
     background-color: white;
     border: 1px solid black;
     padding: 5px;
 }
 
 .element-preview {
-    width: 50%;
+    width: 100%;
     height: 100%;
     background-color: grey;
 }

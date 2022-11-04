@@ -1,7 +1,7 @@
 import React from "react"
 import ChairIcon from '@mui/icons-material/Chair';
 
-function HeaderComponent() {
+const HeaderComponent = () => {
     return (
         <div className="header-container">
             <div className="header-text">

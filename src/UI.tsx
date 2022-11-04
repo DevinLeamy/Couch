@@ -1,12 +1,13 @@
 import * as THREE from 'three'
 import * as React from 'react'
-import { useRef, useState } from 'react'
+import { useRef, useState, useContext } from 'react'
 import { Canvas, Euler, useFrame, useLoader, Vector3 } from '@react-three/fiber'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { v4 as generateUUID } from "uuid"
 import Slider from "@mui/material/Slider"
+import Card from "@mui/material/Card"
 
-import { Element, ElementMesh } from "./common"
+import { ChairModel, Element, ElementMesh } from "./common"
+import { MainContext } from './App'
 
 const MINIMUM_SCALE = 0.2
 const MAXIMUM_SCALE = 4
@@ -16,9 +17,10 @@ interface UIComponentProps {
     selectElement: ((element: Element) => void)
 }
 
-function UIComponent({ addElement, selectElement }: UIComponentProps) {
-    let [focusedElement, setFocusedElement] = useState<Element>({
+const UIComponent = ({ addElement, selectElement }: UIComponentProps) => {
+    const [focusedElement, setFocusedElement] = useState<Element>({
         id: generateUUID(),
+        modelPath: ChairModel,
         selected: false,
         rotation: new THREE.Euler(0, 0, 0),
         scale: 1,
@@ -26,7 +28,7 @@ function UIComponent({ addElement, selectElement }: UIComponentProps) {
         inScene: false,
     });
 
-    function updateRotation(newRotationY: number) {
+    const updateRotation = (newRotationY: number) => {
         setFocusedElement({
             ...focusedElement,
             rotation: new THREE.Euler(
@@ -37,14 +39,19 @@ function UIComponent({ addElement, selectElement }: UIComponentProps) {
         })
     }
 
-    function updateScale(newScale: number) {
+    const updateScale = (newScale: number) => {
         setFocusedElement({
-            ...focusedElement,
-            scale: newScale
+            id: generateUUID(),
+            modelPath: ChairModel,
+            selected: false,
+            rotation: new THREE.Euler(0, 0, 0),
+            scale: 1,
+            position: [0, 0, 0],
+            inScene: false,
         })
     }
 
-    function ElementPreview() {
+    const ElementPreview = () => {
         return (
             <div className="element-preview">
                 <Canvas>
@@ -61,12 +68,16 @@ function UIComponent({ addElement, selectElement }: UIComponentProps) {
         )
     }
 
-    function ElementConfiguration() {
-
-        function onAddElementClick() {
+    const ElementConfiguration = () => {
+        const onAddElementClick = () => {
             if (!focusedElement.inScene) {
                 addElement(focusedElement)
             }
+
+            setFocusedElement({
+                ...focusedElement,
+                id: generateUUID()
+            })
         }
 
         return (
@@ -101,10 +112,10 @@ function UIComponent({ addElement, selectElement }: UIComponentProps) {
     }
 
     return (
-        <div className="ui-container">
+        <Card className="ui-container">
             <ElementPreview />
             <ElementConfiguration />
-        </div>
+        </Card>
     )
 }
 

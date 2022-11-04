@@ -8,7 +8,7 @@ const ROOM_CENTER_X = 0
 const ROOM_FLOOR = -2.3
 const ROOM_CENTER_Z = 0
 
-function Room() {
+const Room = () => {
     const model = useLoader(GLTFLoader, RoomModel)
     return (
         <React.Suspense fallback={null}>
@@ -24,12 +24,22 @@ interface SceneComponentProps {
     onSelect: () => undefined,
 }
 
-function SceneComponent({ elements, onSelect }: SceneComponentProps) {
+const Test = ({ element }: { element: Element }) => {
+    const [test, setTest] = useState(false)
+
+    return (
+        <div key={element.id}>
+            <h1>{element.id}</h1>
+        </div>
+    )
+}
+
+const SceneComponent = ({ elements, onSelect }: SceneComponentProps) => {
     return (
         <div className="scene-container">
             <Canvas>
                 <Room />
-                {elements.map(element => ElementMesh({ element, onClick: onSelect }))}
+                {elements.map(element => <ElementMesh element={element} onClick={onSelect} />)}
             </Canvas>
 
         </div>
