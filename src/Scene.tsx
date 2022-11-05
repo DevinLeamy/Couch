@@ -1,45 +1,58 @@
 import { Canvas, useLoader } from "@react-three/fiber"
 import React, { useRef, useState } from "react"
+import { Euler } from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import { FlyControls, PerspectiveCamera, PresentationControls } from "@react-three/drei"
 
-import { Element, ElementMesh, RoomModel } from "./common"
+import { Element, SceneElement, ElementMesh, ROOM_FLOOR } from "./common"
 
-const ROOM_CENTER_X = 0
-const ROOM_FLOOR = -2.3
-const ROOM_CENTER_Z = 0
 
 const Room = () => {
-    const model = useLoader(GLTFLoader, RoomModel)
+    const model = useLoader(GLTFLoader, "/room.glb")
     return (
         <React.Suspense fallback={null}>
             <ambientLight intensity={0.5} />
-            <primitive position={[1.5, ROOM_FLOOR, 7]} object={model.scene} />
+            <primitive position={[1.61, ROOM_FLOOR, 7]} object={model.scene} />
             <pointLight position={[-30, -30, 10]} />
         </React.Suspense>
     )
 }
 
+
 interface SceneComponentProps {
-    elements: Element[],
+    sceneElements: SceneElement[],
     onSelect: () => undefined,
 }
 
-const Test = ({ element }: { element: Element }) => {
-    const [test, setTest] = useState(false)
+function SceneComponent({ sceneElements, onSelect }: SceneComponentProps) {
+    const cameraRef = useRef()
+    const [viewRotationY, setViewRotationY] = useState<number>(0)
+    interface SceneElementMeshProps {
+        sceneElement: SceneElement,
+        onClick: () => undefined
+    }
 
-    return (
-        <div key={element.id}>
-            <h1>{element.id}</h1>
-        </div>
-    )
-}
 
-const SceneComponent = ({ elements, onSelect }: SceneComponentProps) => {
+    function SceneElementMesh({ sceneElement, onClick }: SceneElementMeshProps) {
+        return <ElementMesh
+            element={sceneElement.element}
+            onClick={onClick}
+            position={sceneElement.position}
+        />
+    }
+
     return (
         <div className="scene-container">
             <Canvas>
-                <Room />
-                {elements.map(element => <ElementMesh element={element} onClick={onSelect} />)}
+                <PresentationControls
+                    // vertical limits
+                    polar={[0, 0]}
+                    // horizontal limits
+                    azimuth={[-Math.PI / 5, Math.PI / 5]}
+                >
+                    <Room />
+                    {sceneElements.map(sceneElement => <SceneElementMesh sceneElement={sceneElement} onClick={onSelect} />)}
+                </PresentationControls >
             </Canvas>
 
         </div>

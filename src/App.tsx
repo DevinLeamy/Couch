@@ -1,29 +1,19 @@
-import React, { useRef, useState, createContext } from 'react'
-import { useLoader } from "@react-three/fiber"
+import React, { useState } from 'react'
 
-// import Header from "./Header"
 import UI from "./UI"
 import Scene from "./Scene"
-import { Element, ChairModel } from "./common"
-import { ObjectMap } from '@react-three/fiber';
-import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-
-interface MainContextInterface {
-    models: Map<string, GLTF & ObjectMap>
-}
-
-export const MainContext = createContext<MainContextInterface | null>(null);
+import { Element, SceneElement } from "./common"
+import { generateRandomScene, getSceneElementFromElement } from "./utils"
 
 function App() {
-    const chairModel = useLoader(GLTFLoader, ChairModel)
-
-    const [sceneElements, setSceneElements] = useState<Element[]>([])
+    const [sceneElements, setSceneElements] = useState<SceneElement[]>(generateRandomScene())
     const [selectedElement, setSelectedElement] = useState<Element>()
 
     function onAddElement(newElement: Element) {
-        newElement.selected = true
+        const sceneElement = getSceneElementFromElement(newElement)
+        sceneElement.selected = true
 
-        setSceneElements([...sceneElements, newElement])
+        setSceneElements([...sceneElements, sceneElement])
     }
 
     function onSelectElement(element: Element) {
@@ -32,23 +22,14 @@ function App() {
 
     return (
         <div className="app-container">
-            {/* <Header /> */}
-            <MainContext.Provider
-                value={{
-                    models: new Map<string, GLTF & ObjectMap>([
-                        [ChairModel, chairModel]
-                    ])
-                }}
-            >
-                <Scene
-                    elements={sceneElements}
-                    onSelect={() => undefined}
-                />
-                <UI
-                    addElement={onAddElement}
-                    selectElement={onSelectElement}
-                />
-            </ MainContext.Provider>
+            <Scene
+                sceneElements={sceneElements}
+                onSelect={() => undefined}
+            />
+            <UI
+                addElement={onAddElement}
+                selectElement={onSelectElement}
+            />
         </div>
     )
 }

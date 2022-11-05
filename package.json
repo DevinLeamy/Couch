@@ -4,22 +4,22 @@
   "main": "src/index.tsx",
   "license": "MIT",
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.10.9",
-    "@mui/material": "^5.10.12",
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
+    "@mui/icons-material": "5.10.9",
+    "@mui/material": "5.10.12",
     "@react-three/drei": "9.40.0",
     "@react-three/fiber": "8.9.1",
     "@types/react": "18.0.24",
-    "@types/react-dom": "^18.0.8",
+    "@types/react-dom": "18.0.8",
     "@types/three": "0.144.0",
-    "@types/uuid": "^8.3.4",
+    "@types/uuid": "8.3.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
     "three": "0.146.0",
     "typescript": "4.8.4",
-    "uuid": "^9.0.0"
+    "uuid": "9.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,9 +41,9 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.42.0",
-    "@typescript-eslint/parser": "^5.42.0",
-    "eslint": "^8.26.0",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "@typescript-eslint/eslint-plugin": "5.42.0",
+    "@typescript-eslint/parser": "5.42.0",
+    "eslint": "8.26.0",
+    "eslint-plugin-react-hooks": "4.6.0"
   }
 }

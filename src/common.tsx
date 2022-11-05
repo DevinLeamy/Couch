@@ -1,33 +1,64 @@
-import { Vector3, useLoader } from "@react-three/fiber"
-import React, { useRef, useMemo, useContext, useState } from "react"
-import { Group } from "three"
+import { Euler } from "three"
+import { Vector3, useLoader, PrimitiveProps } from "@react-three/fiber"
+import React, { useMemo, useState, ReactNode } from "react"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
-import { MainContext } from "./App"
+export const ROOM_CENTER_X = 0
+export const ROOM_FLOOR = -2.3
+export const ROOM_CENTER_Z = 0
 
-export const RoomModel = "/room.glb"
-export const ChairModel = "/chair.gltf"
+export const CHAIR = "Chair"
+export const COUCH = "Couch"
+
+export const MODEL_TYPES = [
+    CHAIR, COUCH
+]
+
+export type Model = {
+    id: string,
+    // name of the model (ex: "chair")
+    name: string,
+    // path to the model
+    path: string,
+    // default scale of the model
+    scale: number,
+    // default (front-facing) rotation 
+    rotation: Euler
+}
 
 export type Element = {
     id: string
-    modelPath: string,
+    model: Model,
     selected: boolean,
-    rotation: THREE.Euler,
-    scale: number,
-    position: Vector3,
-    inScene: boolean,
+    rotation: Euler,
+}
+
+export type SceneElement = {
+    id: string,
+    element: Element,
+    visible: boolean,
+    selected: boolean,
+    position: Vector3
 }
 
 export interface ElementMeshProps {
     element: Element,
     onClick?: () => undefined,
+    position?: Vector3
 }
 
-export const ElementMesh = ({ element, onClick }: ElementMeshProps) => {
-    const { scene } = useLoader(GLTFLoader, element.modelPath)
-    const copiedScene = useMemo(() => scene.clone(), [scene])
+export function ElementMesh({ element, onClick, position }: ElementMeshProps) {
+    const { scene } = useLoader(GLTFLoader, element.model.path)
+    const modelGeometry = useMemo(() => scene.clone(), [scene])
 
     const [hovering, setHovering] = useState(false)
+
+    const modelRotation = new Euler(
+        element.model.rotation.x + element.rotation.x,
+        element.model.rotation.y + element.rotation.y,
+        element.model.rotation.z + element.rotation.z,
+    )
+    const modelPosition = position ?? [0, 0, 0]
 
     return (
         <React.Suspense
@@ -35,16 +66,17 @@ export const ElementMesh = ({ element, onClick }: ElementMeshProps) => {
             key={element.id}
         >
             <mesh
-                scale={element.scale}
+                scale={element.model.scale}
                 onPointerOver={(_e) => setHovering(true)}
                 onPointerOut={(_e) => setHovering(false)}
+
             >
                 <primitive
-                    object={copiedScene}
-                    position={element.position}
-                    rotation={element.rotation}
+                    object={modelGeometry}
+                    rotation={modelRotation}
+                    position={modelPosition}
                 />
             </mesh>
-        </React.Suspense>
+        </React.Suspense >
     )
 }
