@@ -26,36 +26,25 @@ body {
     height: 100%;
 }
 
-.header-container {
-    --header-height: 50px;
-    height: var(--header-height);
-    display: flex;
-    flex-direction: row;
-
-}
-
-.header-icon {
-    margin-top: 5px;
-    margin-left: 10px;
-    color: rgb(43, 75, 239);
-    float: right;
-}
-
-.header-text {
-    font-size: 25px;
-    margin-left: 10px;
-    height: 100%;
-    line-height: var(--header-height);
-    font-weight: 800;
-}
-
 .scene-container {
     --scene-height: 100%;
     margin: auto;
     width: 100%;
     height: var(--scene-height);
-    background-color: blue;
+    background-color: beige;
+    position: relative;
+}
 
+.scene-controller-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 400px;
+    height: 400px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .ui-container {

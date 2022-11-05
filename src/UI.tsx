@@ -7,16 +7,14 @@ import Card from "@mui/material/Card"
 
 import { Element, ElementMesh } from "./common"
 import { getModelByName, generateUUID, } from "./utils"
+import { SceneContext } from './SceneContext'
 
 const MINIMUM_SCALE = 0.2
 const MAXIMUM_SCALE = 4
 
-interface UIComponentProps {
-    addElement: ((element: Element) => void),
-    selectElement: ((element: Element) => void)
-}
+function UIComponent() {
+    const { addElement } = React.useContext(SceneContext)!
 
-function UIComponent({ addElement, selectElement }: UIComponentProps) {
     const [focusedElement, setFocusedElement] = useState<Element>({
         id: generateUUID(),
         model: getModelByName("Chair")!,
