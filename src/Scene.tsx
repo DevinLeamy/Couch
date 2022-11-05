@@ -1,23 +1,18 @@
 import { Canvas, useLoader, useThree } from "@react-three/fiber"
 import React, { useRef, useState } from "react"
 import { Color, Euler } from "three"
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { PresentationControls } from "@react-three/drei"
-import { useGesture } from "react-use-gesture"
-import { useSpring, a } from "@react-spring/three"
+import { useGesture } from "@use-gesture/react"
 
 import { SceneElement, ElementMesh, ROOM_FLOOR } from "./common"
 import { RoomModel } from "./gltfjsx/Room"
 
 
 const Room = () => {
-    // const model = useLoader(GLTFLoader, "/room.glb")
     return (
         <React.Suspense fallback={null}>
             <ambientLight intensity={0.5} />
-            {/* <primitive position={[1.61, ROOM_FLOOR, 7]} object={model.scene} /> */}
             <RoomModel position={[1.61, ROOM_FLOOR, 4]} />
-            {/* <RoomModel position={[1.3, ROOM_FLOOR, 4]} /> */}
             <pointLight position={[-30, -30, 10]} />
         </React.Suspense>
     )
@@ -32,31 +27,43 @@ interface SceneElementMeshProps {
 function SceneElementMesh({ sceneElement, onClick }: SceneElementMeshProps) {
     const { size, viewport } = useThree()
 
-    const [springProps, setSpringProps] = useSpring(() => ({ config: { friction: 10 } }))
     const [meshProps, setMeshProps] = useState<any>({
-        position: sceneElement.position
+        position: sceneElement.position,
+        // react-spring config
+        config: { friction: 10 }
     })
+    const [componentProps, setComponentProps] = useState<any>({})
     const aspect = size.width / viewport.width
     const gestureProps = useGesture({
         onDrag,
-        // onHover
+        onHover,
     })
 
-    function onDrag({ offset: [x, y] }: { offset: [number, number] }) {
+    function onDrag({ offset: [x, y] }: any) {
         setMeshProps({ ...meshProps, position: [x / aspect, ROOM_FLOOR, y / aspect], })
     }
 
-    // function onHover({ hovering }: { hovering: boolean }) {
+    function onHover(state: any) {
+        if (state.first) {
+            // on mouse enter
+            setComponentProps({
+                color: new Color("cyan"),
+                opacity: 0.7
+            })
+        } else if (state.last) {
+            // on mouse leave
+            setComponentProps({})
+        }
+    }
 
-    // }
     return <ElementMesh
         key={sceneElement.id}
         element={sceneElement.element}
         meshProps={{
-            ...springProps,
             ...meshProps,
             ...gestureProps(),
         }}
+        componentProps={componentProps}
     />
 }
 

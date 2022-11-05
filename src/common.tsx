@@ -1,7 +1,6 @@
 import { Euler } from "three"
-import { Vector3, useLoader, PrimitiveProps, MeshProps } from "@react-three/fiber"
-import React, { useMemo, useState, ReactNode } from "react"
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import { Vector3 } from "@react-three/fiber"
+import React from "react"
 import { a } from "@react-spring/three"
 
 export const ROOM_CENTER_X = 0
@@ -19,8 +18,8 @@ export type Model = {
     id: string,
     // name of the model (ex: "chair")
     name: string,
-    // path to the model
-    path: string,
+    // gltfjsx component of the model
+    component: (props: any) => JSX.Element,
     // default scale of the model
     scale: number,
     // default (front-facing) rotation 
@@ -43,14 +42,15 @@ export type SceneElement = {
 }
 
 export interface ElementMeshProps {
+    // the model being rendered
     element: Element,
-    meshProps?: any
+    // the positioning, animation, etc... mesh props
+    meshProps?: any,
+    // the props for the specific model (ex: "toggled", for a light)
+    componentProps?: any
 }
 
-export function ElementMesh({ element, meshProps }: ElementMeshProps) {
-    const { scene } = useLoader(GLTFLoader, element.model.path)
-    const modelGeometry = useMemo(() => scene.clone(), [scene])
-
+export function ElementMesh({ element, meshProps, componentProps }: ElementMeshProps) {
     const modelRotation = new Euler(
         element.model.rotation.x + element.rotation.x,
         element.model.rotation.y + element.rotation.y,
@@ -66,15 +66,10 @@ export function ElementMesh({ element, meshProps }: ElementMeshProps) {
                 scale={element.model.scale}
                 rotation={modelRotation}
                 {...meshProps}
-                opacity={0.5}
-                color={"rgb(0, 0, 0)"}
             >
-                <meshStandardMaterial opacity={0.5} />
-                <primitive
-                    object={modelGeometry}
-                >
-                </primitive>
-
+                <element.model.component
+                    {...componentProps}
+                />
             </a.mesh>
         </React.Suspense >
     )

@@ -7,7 +7,6 @@ import { generateRandomScene, getSceneElementFromElement } from "./utils"
 
 function App() {
     const [sceneElements, setSceneElements] = useState<SceneElement[]>(generateRandomScene())
-    const [selectedElement, setSelectedElement] = useState<Element>()
 
     function onAddElement(newElement: Element) {
         const sceneElement = getSceneElementFromElement(newElement)

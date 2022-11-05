@@ -2,6 +2,7 @@ import { Euler } from "three"
 import { v4 as generateUUID } from "uuid"
 
 import { Element, Model } from "./common"
+import { ChairModel, CouchModel } from "./gltfjsx"
 
 export const SceneData: Element[] = [
 
@@ -11,14 +12,14 @@ export const ModelData: Model[] = [
     {
         id: generateUUID(),
         name: "Chair",
-        path: "/chair.gltf",
+        component: ChairModel,
         scale: 1,
         rotation: new Euler(0, 0, 0)
     },
     {
         id: generateUUID(),
         name: "Couch",
-        path: "couch.glb",
+        component: CouchModel,
         scale: 1,
         rotation: new Euler(0, 1.5 * Math.PI, 0)
     }
