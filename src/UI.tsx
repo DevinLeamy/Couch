@@ -43,7 +43,9 @@ function UIComponent({ addElement, selectElement }: UIComponentProps) {
                     <spotLight position={[15, 15, 17]} angle={0.15} penumbra={1} />
                     <ElementMesh
                         element={focusedElement}
-                        position={[0, -1, 3]}
+                        meshProps={{
+                            position: [0, -1, 3]
+                        }}
                     />
                 </Canvas>
             </Card>
@@ -65,9 +67,9 @@ function UIComponent({ addElement, selectElement }: UIComponentProps) {
                     defaultValue={focusedElement.rotation.y}
                     aria-label="Rotation"
                     valueLabelDisplay="auto"
-                    step={6.28 / 50}
+                    step={2 * Math.PI / 50}
                     min={0}
-                    max={6.28}
+                    max={2 * Math.PI}
                     onChangeCommitted={(_event, value) => updateRotation(value as number)}
                 />
                 <button className="add-element-button" onClick={_event => onAddElementClick()}>

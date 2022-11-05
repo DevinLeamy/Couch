@@ -1,7 +1,8 @@
 import { Euler } from "three"
-import { Vector3, useLoader, PrimitiveProps } from "@react-three/fiber"
+import { Vector3, useLoader, PrimitiveProps, MeshProps } from "@react-three/fiber"
 import React, { useMemo, useState, ReactNode } from "react"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import { a } from "@react-spring/three"
 
 export const ROOM_CENTER_X = 0
 export const ROOM_FLOOR = -2.3
@@ -43,40 +44,38 @@ export type SceneElement = {
 
 export interface ElementMeshProps {
     element: Element,
-    onClick?: () => undefined,
-    position?: Vector3
+    meshProps?: any
 }
 
-export function ElementMesh({ element, onClick, position }: ElementMeshProps) {
+export function ElementMesh({ element, meshProps }: ElementMeshProps) {
     const { scene } = useLoader(GLTFLoader, element.model.path)
     const modelGeometry = useMemo(() => scene.clone(), [scene])
-
-    const [hovering, setHovering] = useState(false)
 
     const modelRotation = new Euler(
         element.model.rotation.x + element.rotation.x,
         element.model.rotation.y + element.rotation.y,
         element.model.rotation.z + element.rotation.z,
     )
-    const modelPosition = position ?? [0, 0, 0]
 
     return (
         <React.Suspense
-            fallback={null}
             key={element.id}
+            fallback={null}
         >
-            <mesh
+            <a.mesh
                 scale={element.model.scale}
-                onPointerOver={(_e) => setHovering(true)}
-                onPointerOut={(_e) => setHovering(false)}
-
+                rotation={modelRotation}
+                {...meshProps}
+                opacity={0.5}
+                color={"rgb(0, 0, 0)"}
             >
+                <meshStandardMaterial opacity={0.5} />
                 <primitive
                     object={modelGeometry}
-                    rotation={modelRotation}
-                    position={modelPosition}
-                />
-            </mesh>
+                >
+                </primitive>
+
+            </a.mesh>
         </React.Suspense >
     )
 }

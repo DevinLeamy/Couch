@@ -19,7 +19,7 @@ export const ModelData: Model[] = [
         id: generateUUID(),
         name: "Couch",
         path: "couch.glb",
-        scale: 0.7,
-        rotation: new Euler(0, 1.5 * 3.14, 0)
+        scale: 1,
+        rotation: new Euler(0, 1.5 * Math.PI, 0)
     }
 ]
