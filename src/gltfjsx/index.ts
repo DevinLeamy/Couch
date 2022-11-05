@@ -1,3 +1,6 @@
 export * from "./Chair"
 export * from "./Room"
 export * from "./Couch"
+export * from "./Table"
+export * from "./TV"
+export * from "./Lamp"

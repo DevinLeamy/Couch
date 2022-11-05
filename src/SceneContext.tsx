@@ -1,15 +1,17 @@
 import React, { useState, createContext, ReactNode } from "react"
 
 import { SceneElement, Element } from "./common"
-import { generateRandomScene, getSceneElementFromElement } from "./utils"
+import { generateRandomScene, generateSampleScene, getSceneElementFromElement } from "./utils"
 
 interface SceneContextInterface {
     cameraEnabled: boolean
-    setCameraEnabled: (enabled: boolean) => any,
     sceneElements: SceneElement[],
     addElement: (element: Element) => any,
-    randomizeScene: () => any,
+    setRandomScene: () => any,
+    setSampleScene: () => any,
     clearScene: () => any,
+    selectedElement: SceneElement | undefined,
+    setSelectedElement: (element: SceneElement | undefined) => any
 }
 
 export const SceneContext = createContext<SceneContextInterface | null>(null)
@@ -19,12 +21,11 @@ interface SceneContextProps {
 }
 
 export function SceneContextProvider({ children }: SceneContextProps) {
-    const [cameraEnabled, setCameraEnabled] = useState(false)
-    const [sceneElements, setSceneElements] = useState<SceneElement[]>(generateRandomScene())
+    const [sceneElements, setSceneElements] = useState<SceneElement[]>(generateSampleScene())
+    const [selectedElement, setSelectedElement] = useState<SceneElement>()
 
     function onAddElement(newElement: Element) {
         const sceneElement = getSceneElementFromElement(newElement)
-        sceneElement.selected = true
 
         setSceneElements([...sceneElements, sceneElement])
     }
@@ -32,17 +33,24 @@ export function SceneContextProvider({ children }: SceneContextProps) {
     return (
         <SceneContext.Provider
             value={{
-                cameraEnabled: cameraEnabled,
-                setCameraEnabled: (enabled: boolean) => {
-                    setCameraEnabled(enabled)
-                },
+                // enable the camera when no elements are being manipulated
+                cameraEnabled: selectedElement === undefined,
                 sceneElements,
                 addElement: onAddElement,
-                randomizeScene: () => {
+                setRandomScene: () => {
+                    setSceneElements([])
                     setSceneElements(generateRandomScene())
                 },
                 clearScene: () => {
                     setSceneElements([])
+                },
+                setSampleScene: () => {
+                    setSceneElements([])
+                    setSceneElements(generateSampleScene())
+                },
+                selectedElement,
+                setSelectedElement: (element: SceneElement | undefined) => {
+                    setSelectedElement(element)
                 }
             }}
         >

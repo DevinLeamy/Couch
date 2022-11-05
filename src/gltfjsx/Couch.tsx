@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import React, { useRef } from 'react'
+import React from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { GroupProps } from '@react-three/fiber'
@@ -18,12 +18,12 @@ type GLTFResult = GLTF & {
   }
 }
 
-interface CouchProps extends GroupProps {
+interface CouchModeProps extends GroupProps {
   color?: THREE.Color,
   opacity?: number
 }
 
-export function CouchModel({ color, opacity, ...props }: CouchProps) {
+export function CouchModel({ color, opacity, ...props }: CouchModeProps) {
   const { nodes, materials } = useGLTF('/couch.glb') as unknown as GLTFResult
 
   function addMaterialProps(material: THREE.MeshStandardMaterial): THREE.MeshStandardMaterial {

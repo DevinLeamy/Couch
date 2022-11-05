@@ -4,45 +4,59 @@ import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Slider from "@mui/material/Slider"
 import Card from "@mui/material/Card"
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
-import { Element, ElementMesh } from "./common"
+import { CHAIR, COUCH, TABLE, Element, ElementMesh, Model, MODEL_TYPES, LAMP, TV } from "./common"
 import { getModelByName, generateUUID, } from "./utils"
 import { SceneContext } from './SceneContext'
-
-const MINIMUM_SCALE = 0.2
-const MAXIMUM_SCALE = 4
+import { Button } from '@mui/material'
 
 function UIComponent() {
     const { addElement } = React.useContext(SceneContext)!
+    const [elementId, setElementId] = useState<string>(generateUUID())
+    const [modelIndex, setModelIndex] = useState<number>(0)
+    const [model, setModel] = useState<Model>(getModelByName(CHAIR)!)
+    const [rotationY, setRotationY] = useState<number>(0)
 
-    const [focusedElement, setFocusedElement] = useState<Element>({
-        id: generateUUID(),
-        model: getModelByName("Chair")!,
-        selected: false,
-        rotation: new THREE.Euler(0, 0, 0),
-    });
+    function createElement(): Element {
+        return {
+            id: elementId,
+            model: model,
+            rotation: new THREE.Euler(0, rotationY, 0)
+        }
+    }
 
     function updateRotation(newRotationY: number) {
-        setFocusedElement({
-            ...focusedElement,
-            rotation: new THREE.Euler(
-                focusedElement.rotation.x,
-                newRotationY,
-                focusedElement.rotation.z,
-            )
-        })
+        setRotationY(newRotationY)
     }
 
     function ElementPreview() {
+        const modelType = MODEL_TYPES[modelIndex]
+        // position such that the element display within the view
+        let position = [0, 0, 0];
+
+        if (modelType === CHAIR) {
+            position = [0, -1, 3];
+        } else if (modelType === COUCH) {
+            position = [0, -1, 0]
+        } else if (modelType === TABLE) {
+            position = [0, -1, 2]
+        } else if (modelType === LAMP) {
+            position = [0, -1, 3]
+        } else if (modelType == TV) {
+            position = [0, -1, 2]
+        }
+
         return (
             <Card className="element-preview">
                 <Canvas>
                     <ambientLight intensity={0.5} />
-                    <spotLight position={[15, 15, 17]} angle={0.15} penumbra={1} />
+                    <spotLight intensity={0.5} position={[0, 0, 17]} angle={0.15} penumbra={1} />
                     <ElementMesh
-                        element={focusedElement}
+                        element={createElement()}
                         meshProps={{
-                            position: [0, -1, 3]
+                            position: position
                         }}
                     />
                 </Canvas>
@@ -51,28 +65,50 @@ function UIComponent() {
     }
 
     function ElementConfiguration() {
-        const onAddElementClick = () => {
-            addElement(focusedElement)
+        function onAddElement() {
+            addElement(createElement())
+            setElementId(generateUUID())
+        }
 
-            setFocusedElement({ ...focusedElement, id: generateUUID() })
+        function onNextElement() {
+            const newModelIndex = (modelIndex + 1) % MODEL_TYPES.length
+            setModelIndex(newModelIndex)
+            setModel(getModelByName(MODEL_TYPES[newModelIndex])!)
+        }
+
+        function onPreviousElement() {
+            let newModelIndex = modelIndex - 1
+            if (newModelIndex < 0) {
+                newModelIndex = MODEL_TYPES.length - 1
+            }
+
+            setModelIndex(newModelIndex)
+            setModel(getModelByName(MODEL_TYPES[newModelIndex])!)
         }
 
         return (
             <Card className="element-configuration-container">
+                <div className="element-switcher-container">
+                    <Button variant="outlined" className="previous-element-button" onClick={onPreviousElement}>
+                        <ArrowCircleLeftIcon />
+                    </Button>
+                    <Button variant="outlined" className="next-element-button" onClick={onNextElement}>
+                        <ArrowCircleRightIcon />
+                    </Button>
+                </div>
                 <span>Rotation</span>
                 <Slider
                     size="small"
-                    defaultValue={focusedElement.rotation.y}
-                    aria-label="Rotation"
-                    valueLabelDisplay="auto"
-                    step={2 * Math.PI / 50}
+                    defaultValue={rotationY}
+                    step={2 * Math.PI / 10}
                     min={0}
                     max={2 * Math.PI}
                     onChangeCommitted={(_event, value) => updateRotation(value as number)}
                 />
-                <button className="add-element-button" onClick={_event => onAddElementClick()}>
+                <Button variant="contained" className="add-element-button" onClick={onAddElement}>
                     Add element
-                </button>
+                </Button>
+
             </Card>
         )
     }

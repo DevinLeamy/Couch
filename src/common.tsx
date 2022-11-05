@@ -9,9 +9,12 @@ export const ROOM_CENTER_Z = 0
 
 export const CHAIR = "Chair"
 export const COUCH = "Couch"
+export const TABLE = "Table"
+export const LAMP = "Lamp"
+export const TV = "TV"
 
 export const MODEL_TYPES = [
-    CHAIR, COUCH
+    CHAIR, COUCH, TABLE, LAMP, TV
 ]
 
 export type Model = {
@@ -29,15 +32,12 @@ export type Model = {
 export type Element = {
     id: string
     model: Model,
-    selected: boolean,
     rotation: Euler,
 }
 
 export type SceneElement = {
     id: string,
     element: Element,
-    visible: boolean,
-    selected: boolean,
     position: Vector3
 }
 
