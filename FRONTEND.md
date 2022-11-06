@@ -20,4 +20,6 @@ yarn start
 ```
 2. Navigate to `localhost:3000`.
 
+> Note: It may take a minute to start up for the first time. 
+
 

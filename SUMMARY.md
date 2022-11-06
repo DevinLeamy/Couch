@@ -18,8 +18,8 @@ are not very flexible, which led me to `gltfjsx`.)_
 
 ### Time 
 
-The whole challenge was completed in a little over 13 hours, spread over three days. My `bevy` false-start took a couple of hours so 
-it was more like eleven hours, but it was part of the process, nonetheless. 
+The whole challenge was completed in a little over 12 hours, spread over three days. My `bevy` false-start took a couple of hours so 
+it was more like ten hours, but it was part of the process, nonetheless. 
 
 ### Features
 I chose to implement certain features that were not required over some of the other requested features. Namely, I added an orbit camera, element highlights,
@@ -27,7 +27,7 @@ lighting, and cursor controls, and did not implement togglable elements and coll
 
 ### Summary
 
-The backend architecture can be found in `BACKEND.pdf`, the demonstration video is titled `demo.XXX`, the front end code is in `frontend/`, and the frontend instructions are in `FRONTEND.pdf`. 
+The backend architecture can be found in `BACKEND.pdf`, the demonstration video is titled `demo.mp4`, the front end code is in `frontend/`, and the frontend instructions are in `FRONTEND.pdf`. 
 
 I enjoyed the challenge - a mini hackathon in some respects - and I hope you enjoy reviewing my submission! 
 
