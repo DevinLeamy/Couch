@@ -1,5 +1,5 @@
 {
-  "name": "couch",
+  "name": "frontend",
   "version": "1.0.0",
   "main": "src/index.tsx",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "@types/react-dom": "18.0.8",
     "@types/three": "0.144.0",
     "@types/uuid": "8.3.4",
-    "@use-gesture/react": "^10.2.22",
+    "@use-gesture/react": "10.2.22",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",

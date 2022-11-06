@@ -3,10 +3,26 @@ import { Vector3 } from "@react-three/fiber"
 import { Euler } from "three"
 
 import { ModelData } from "./data"
-import { Model, Element, SceneElement, ROOM_FLOOR, TV, COUCH, LAMP, CHAIR, TABLE } from "./common"
+import { Model, Element, SceneElement, ROOM_FLOOR, TV, COUCH, LAMP, CHAIR, TABLE, MODEL_TYPES } from "./common"
 
 export function generateUUID(): string {
     return v4()
+}
+
+export function lerp(start: Vector3, end: Vector3, percentage: number): Vector3 {
+    const [sx, sy, sz] = start as [x: number, y: number, z: number]
+    const [ex, ey, ez] = end as [x: number, y: number, z: number]
+    return [
+        sx + (ex - sx) * percentage,
+        sy + (ey - sy) * percentage,
+        sz + (ez - sz) * percentage
+    ]
+}
+
+export function distance(a: Vector3, b: Vector3): number {
+    const [ax, ay, az] = a as [x: number, y: number, z: number]
+    const [bx, by, bz] = b as [x: number, y: number, z: number]
+    return Math.sqrt((ax - bx) ** 2 + (ay - by) ** 2 + (az - bz) ** 2)
 }
 
 export function getModelByName(modelName: string): Model | undefined {
@@ -31,7 +47,7 @@ function randomNumberInRange(min: number, max: number): number {
     return Math.random() * (max - min) + min;
 }
 
-function generateRandomPosition(): Vector3 {
+export function generateRandomPosition(): Vector3 {
     return [
         randomNumberInRange(-2.5, 2.5),
         ROOM_FLOOR,
@@ -47,26 +63,25 @@ function generateRandomRotation(): Euler {
     )
 }
 
-export function generateRandomScene(): SceneElement[] {
-    const scene: SceneElement[] = []
-
-    for (const model of ModelData) {
-        const element: Element = {
-            id: generateUUID(),
-            model: getModelByName(model.name)!,
-            rotation: generateRandomRotation(),
-        }
-        const sceneElement: SceneElement = {
-            id: generateUUID(),
-            element: element,
-            position: generateRandomPosition()
-        }
-
-        scene.push(sceneElement)
+export function generateRandomElement(): Element {
+    const modelType = MODEL_TYPES[Math.floor(Math.random() * MODEL_TYPES.length)]
+    const element: Element = {
+        id: generateUUID(),
+        model: getModelByName(modelType)!,
+        rotation: generateRandomRotation(),
     }
 
+    return element
+}
 
-    return scene
+export function generateRandomSceneElement(): SceneElement {
+    const sceneElement: SceneElement = {
+        id: generateUUID(),
+        element: generateRandomElement(),
+        position: generateRandomPosition()
+    }
+
+    return sceneElement
 }
 
 const SampleSceneData = [

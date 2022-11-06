@@ -41,6 +41,20 @@ export type SceneElement = {
     position: Vector3
 }
 
+export type MovementTween = {
+    // final position
+    targetPosition: Vector3,
+    // percentage of the total distance to travel, per tick
+    movementSpeed: number,
+    // callback to envoke on completion
+    onTweenComplete: () => any
+}
+
+export type ElementAnimation = {
+    elementId: string,
+    animation: MovementTween
+}
+
 export interface ElementMeshProps {
     // the model being rendered
     element: Element,

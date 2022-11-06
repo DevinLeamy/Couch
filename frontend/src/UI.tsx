@@ -8,7 +8,7 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 import { CHAIR, COUCH, TABLE, Element, ElementMesh, Model, MODEL_TYPES, LAMP, TV } from "./common"
-import { getModelByName, generateUUID, } from "./utils"
+import { getModelByName, generateUUID, generateRandomElement } from "./utils"
 import { SceneContext } from './SceneContext'
 import { Button } from '@mui/material'
 
@@ -70,6 +70,11 @@ function UIComponent() {
             setElementId(generateUUID())
         }
 
+        function onAddRandomElement() {
+            addElement(generateRandomElement())
+            setElementId(generateUUID())
+        }
+
         function onNextElement() {
             const newModelIndex = (modelIndex + 1) % MODEL_TYPES.length
             setModelIndex(newModelIndex)
@@ -108,7 +113,9 @@ function UIComponent() {
                 <Button variant="contained" className="add-element-button" onClick={onAddElement}>
                     Add element
                 </Button>
-
+                <Button variant="contained" className="add-element-button" onClick={onAddRandomElement}>
+                    Add random element
+                </Button>
             </Card>
         )
     }

@@ -46,6 +46,10 @@ body {
     gap: 10px;
 }
 
+.scene-element-display-button {
+    height: 30px !important;
+}
+
 .ui-container {
     position: absolute;
     padding: 10px;
