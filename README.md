@@ -1,7 +1,8 @@
 # Couch
 
 ### Demo
-![Demo]("./demo.mp4")
+https://user-images.githubusercontent.com/45083086/211934995-65cefdc2-491d-4633-af84-3c0af4ba8220.mp4
+
 
 ### Overview
 Relies on the following technologies:
