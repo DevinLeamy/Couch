@@ -1,8 +1,10 @@
-# Think Tank Team Coding Challenge Submission (Frontend)
-#### _Author: Devin Leamy_
+# Couch
+
+### Demo
+![Demo]("./demo.mp4")
 
 ### Overview
-The front end relies on the following technologies:
+Relies on the following technologies:
 - [`react`](https://www.google.com/search?client=safari&rls=en&q=react+js&ie=UTF-8&oe=UTF-8) Single page web application.
 - [`@react-three/fiber`](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) Three.js react integration.
 - [`@react-spring/three`](https://react-spring.dev) Three.js animation utilities for react.
@@ -10,16 +12,12 @@ The front end relies on the following technologies:
 - [`@react-three/drei`](https://github.com/pmndrs/drei) Utilities for react-three-fiber.
 - [`gltfjsx`](https://github.com/pmndrs/gltfjsx) Loading gltf/glb assets as react-three-fiber react components.
 
-
 ### Instructions 
 1. Install the dependencies and launch the `React` application.
 ```bash
-cd frontend
 yarn install
 yarn start
 ```
 2. Navigate to `localhost:3000`.
-
-> Note: It may take a minute to start up for the first time. 
 
 
